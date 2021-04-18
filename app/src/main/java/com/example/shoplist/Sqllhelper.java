@@ -19,7 +19,7 @@ public class Sqllhelper extends SQLiteOpenHelper{
     private static final String COLUMN_AMOUNT = "item_amount";
     private static final String COLUMN_PRICE = "item_price";
 
-    public Sqllhelper(@Nullable Context context) {
+    Sqllhelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context=context;
     }
@@ -68,6 +68,16 @@ public class Sqllhelper extends SQLiteOpenHelper{
     void deleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME);
+    }
+
+    void deleteSolo(String row_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(TABLE_NAME, "id=?", new String[]{row_id});
+        if(result == -1){
+            Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, "Item deleted!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

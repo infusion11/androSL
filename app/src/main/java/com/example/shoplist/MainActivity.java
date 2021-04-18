@@ -1,5 +1,6 @@
 package com.example.shoplist;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,13 +50,19 @@ public class MainActivity extends AppCompatActivity {
         item_price = new ArrayList<>();
 
         dbtoArray();
-        itemsAdapter = new ItemsAdapter(MainActivity.this,item_id,item_name,item_amount,item_price);
+        itemsAdapter = new ItemsAdapter(MainActivity.this,this,item_id,item_name,item_amount,item_price);
         recyclerView.setAdapter(itemsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == 1){
+            recreate();
+        }
+    }
 
     void dbtoArray(){
         Cursor cursor = myDB.readAll();

@@ -1,5 +1,6 @@
 package com.example.shoplist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,7 +17,9 @@ import java.util.ArrayList;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> {
     private Context context;
     private ArrayList item_id, item_name, item_amount, item_price;
-    ItemsAdapter(Context context, ArrayList item_id, ArrayList item_name, ArrayList item_amount, ArrayList item_price){
+    Activity activity;
+    ItemsAdapter(Activity activity, Context context, ArrayList item_id, ArrayList item_name, ArrayList item_amount, ArrayList item_price){
+        this.activity=activity;
         this.context=context;
         this.item_id = item_id;
         this.item_name = item_name;
@@ -37,7 +40,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         holder.item_name.setText(String.valueOf(item_name.get(position)));
         holder.item_amount.setText(String.valueOf(item_amount.get(position)));
         holder.item_price.setText(String.valueOf(item_price.get(position)));
-
+        holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DelActivity.class);
+                intent.putExtra("id", String.valueOf(item_id.get(position)));
+                intent.putExtra("name", String.valueOf(item_name.get(position)));
+                intent.putExtra("amount", String.valueOf(item_amount.get(position)));
+                intent.putExtra("price", String.valueOf(item_price.get(position)));
+                activity.startActivityForResult(intent,1);
+            }
+        });
     }
 
     @Override
